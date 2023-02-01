@@ -1,14 +1,14 @@
 <script type="text/javascript">
   RED.nodes.registerType("worterbuch-set", {
-    category: "function",
-    color: "#a6bbcf",
+    category: "network",
+    color: "#919aed",
     defaults: {
       name: { value: "" },
       server: { value: "", type: "worterbuch-server" },
     },
     inputs: 1,
     outputs: 0,
-    icon: "file.png",
+    icon: "bridge.svg",
     label: function () {
       return this.name || "worterbuch-set";
     },

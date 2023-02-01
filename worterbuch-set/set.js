@@ -1,9 +1,9 @@
+const { setupWb } = require("../utils");
+
 module.exports = function (RED) {
   function WorterbuchSetNode(config) {
-    RED.nodes.createNode(this, config);
-    var node = this;
-    const server = RED.nodes.getNode(config.server);
-    const wb = server.wb;
+    const node = this;
+    const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
       node.on("input", (msg) => {
