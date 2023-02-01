@@ -1,5 +1,5 @@
 {
-  "name": "@worterbuch/node-red-wb",
+  "name": "@babymotte/node-red-worterbuch",
   "version": "0.30.0",
   "description": "Nodes for Wörterbuch integration",
   "main": "index.js",
