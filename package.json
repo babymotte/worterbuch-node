@@ -1,0 +1,32 @@
+{
+  "name": "@worterbuch/node-red-wb",
+  "version": "0.30.0",
+  "description": "Nodes for Wörterbuch integration",
+  "main": "index.js",
+  "keywords": [
+    "worterbuch",
+    "node-red"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babymotte/worterbuch-node.git"
+  },
+  "author": "Michael Bachmann <mbachmann@bbmsoft.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/babymotte/worterbuch-node/issues"
+  },
+  "homepage": "https://github.com/babymotte/worterbuch-node#readme",
+  "node-red": {
+    "nodes": {
+      "worterbuch-server": "worterbuch-server/server.js",
+      "worterbuch-get": "worterbuch-get/get.js"
+    }
+  },
+  "dependencies": {
+    "worterbuch-js": "^0.30.0"
+  }
+}
