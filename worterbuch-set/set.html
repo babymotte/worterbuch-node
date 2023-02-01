@@ -1,0 +1,31 @@
+<script type="text/javascript">
+  RED.nodes.registerType("worterbuch-set", {
+    category: "function",
+    color: "#a6bbcf",
+    defaults: {
+      name: { value: "" },
+      server: { value: "", type: "worterbuch-server" },
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "file.png",
+    label: function () {
+      return this.name || "worterbuch-set";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="worterbuch-set">
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+    <input type="text" id="node-input-server" placeholder="Server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="worterbuch-set">
+  <p>A node that set values an on Wörterbuch server.</p>
+</script>

@@ -5,6 +5,10 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     node.reconnect = config.reconnect;
+    this.on("close", () => {
+      node.reconnect = false;
+      node.wb.close();
+    });
     node.connect = () => {
       node.wb = connect(`ws://${config.host}:${config.port}/ws`);
       node.wb.onclose = () => {
