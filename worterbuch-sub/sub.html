@@ -1,0 +1,36 @@
+<script type="text/javascript">
+  RED.nodes.registerType("worterbuch-sub", {
+    category: "function",
+    color: "#a6bbcf",
+    defaults: {
+      name: { value: "" },
+      server: { value: "", type: "worterbuch-server" },
+      key: { value: "", required: true },
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: "file.png",
+    label: function () {
+      return this.name || "worterbuch-sub";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="worterbuch-sub">
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+    <input type="text" id="node-input-server" placeholder="Server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-key"><i class="fa fa-tag"></i> Key</label>
+    <input type="text" id="node-input-key" placeholder="Key" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="worterbuch-sub">
+  <p>A node that subscribes to a key on a Wörterbuch server.</p>
+</script>

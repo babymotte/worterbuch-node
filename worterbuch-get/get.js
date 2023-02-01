@@ -4,10 +4,13 @@ module.exports = function (RED) {
     var node = this;
     const server = RED.nodes.getNode(config.server);
     const wb = server.wb;
-    node.on("input", (msg) => {
-      wb.get(msg.payload, (val) => {
-        msg.payload = val;
-        node.send(msg);
+
+    wb.whenConnected(() => {
+      node.on("input", (msg) => {
+        wb.get(msg.payload, (val) => {
+          msg.payload = val;
+          node.send(msg);
+        });
       });
     });
   }

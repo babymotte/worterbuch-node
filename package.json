@@ -24,7 +24,8 @@
     "nodes": {
       "worterbuch-server": "worterbuch-server/server.js",
       "worterbuch-get": "worterbuch-get/get.js",
-      "worterbuch-set": "worterbuch-set/set.js"
+      "worterbuch-set": "worterbuch-set/set.js",
+      "worterbuch-sub": "worterbuch-sub/sub.js"
     }
   },
   "dependencies": {

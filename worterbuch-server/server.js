@@ -5,7 +5,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
     var node = this;
     node.reconnect = config.reconnect;
-    this.on("close", () => {
+    node.on("close", () => {
       node.reconnect = false;
       node.wb.close();
     });
@@ -18,6 +18,20 @@ module.exports = function (RED) {
             console.log("Trying to reconnect …");
             setTimeout(node.connect, 2000);
           }, 1000);
+        }
+      };
+      node.wb.handshakeCallbacks = [];
+      node.wb.whenConnected = (cb) => {
+        if (node.wb.connected) {
+          cb();
+        } else {
+          node.wb.handshakeCallbacks.push(cb);
+        }
+      };
+      node.wb.onhandshake = () => {
+        node.wb.connected = true;
+        if (node.wb.handshakeCallbacks) {
+          node.wb.handshakeCallbacks.forEach((cb) => cb());
         }
       };
     };
