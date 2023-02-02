@@ -34,7 +34,10 @@ module.exports = function (RED) {
 
         wb.pGet(pattern, (kvps) => {
           const msgs = kvps.map(({ key, value }) => {
-            return { payload: value, topic: key };
+            const newMsg = { ...msg };
+            newMsg.payload = value;
+            newMsg[node.pattern] = key;
+            return newMsg;
           });
           node.send([msgs]);
         });
