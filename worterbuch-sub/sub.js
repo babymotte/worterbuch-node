@@ -6,8 +6,9 @@ module.exports = function (RED) {
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      wb.subscribe(config.key, (val) => {
-        node.send({ payload: val });
+      const topic = config.key;
+      wb.subscribe(topic, (payload) => {
+        node.send({ payload, topic });
       });
     });
   }
