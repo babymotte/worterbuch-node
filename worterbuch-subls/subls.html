@@ -1,29 +1,31 @@
 <script type="text/javascript">
-  RED.nodes.registerType("worterbuch-sub", {
+  RED.nodes.registerType("worterbuch-subls", {
     category: "network",
     color: "#aabbfa",
     defaults: {
       name: { value: "" },
       server: { value: "", type: "worterbuch-server" },
-      key: { value: "", required: true },
+      parent: { value: "", required: true },
     },
     inputs: 0,
-    outputs: 2,
+    outputs: 1,
     icon: "bridge.svg",
     label: function () {
-      return this.name || "wbsub " + this.key;
+      return this.name || "wbsubls " + this.parent;
     },
   });
 </script>
 
-<script type="text/html" data-template-name="worterbuch-sub">
+<script type="text/html" data-template-name="worterbuch-subls">
   <div class="form-row">
     <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
     <input type="text" id="node-input-server" placeholder="Server" />
   </div>
   <div class="form-row">
-    <label for="node-input-key"><i class="fa fa-file-text-o"></i> Key</label>
-    <input type="text" id="node-input-key" placeholder="Key" />
+    <label for="node-input-parent"
+      ><i class="fa fa-file-text-o"></i> Parent</label
+    >
+    <input type="text" id="node-input-parent" placeholder="Parent" />
   </div>
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -31,6 +33,9 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="worterbuch-sub">
-  <p>A node that subscribes to a key on a Wörterbuch server.</p>
+<script type="text/html" data-help-name="worterbuch-subls">
+  <p>
+    A node that subscribes to changes in the key-tree structure on a Wörterbuch
+    server.
+  </p>
 </script>

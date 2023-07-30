@@ -1,17 +1,17 @@
 <script type="text/javascript">
-  RED.nodes.registerType("worterbuch-get", {
+  RED.nodes.registerType("worterbuch-ls", {
     category: "network",
     color: "#aabbfa",
     defaults: {
       name: { value: "" },
       server: { value: "", type: "worterbuch-server" },
-      key: { value: "topic" },
+      parent: { value: "topic" },
     },
     inputs: 1,
     outputs: 1,
     icon: "bridge.svg",
     label: function () {
-      return this.name || "wbget";
+      return this.name || "wbls";
     },
     oneditprepare: () =>
       $("#node-input-key").typedInput({
@@ -22,15 +22,15 @@
   });
 </script>
 
-<script type="text/html" data-template-name="worterbuch-get">
+<script type="text/html" data-template-name="worterbuch-ls">
   <div class="form-row">
     <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
     <input type="text" id="node-input-server" placeholder="Server" />
   </div>
   <div class="form-row">
-    <label for="node-input-key"><i class="fa fa-file-text-o"></i> Key</label>
-    <input type="text" id="node-input-key" />
-    <input type="hidden" id="node-input-key-type" />
+    <label for="node-input-key"><i class="fa fa-file-text-o"></i> Parent</label>
+    <input type="text" id="node-input-parent" />
+    <input type="hidden" id="node-input-parent-type" placeholder="Parent" />
   </div>
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -38,9 +38,9 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="worterbuch-get">
+<script type="text/html" data-help-name="worterbuch-ls">
   <p>
-    A node that queries a Wörterbuch server for the value of the key contained
-    in the message payload.
+    A node that queries a Wörterbuch server for the direct sub-key segments of
+    the given sub-key (think of 'ls' in the directory tree in a file system)
   </p>
 </script>

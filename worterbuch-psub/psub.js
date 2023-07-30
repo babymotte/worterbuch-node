@@ -6,11 +6,19 @@ module.exports = function (RED) {
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      wb.pSubscribe(config.pattern, (kvps) => {
-        const msgs = kvps.map(({ key, value }) => {
-          return { payload: value, topic: key };
-        });
-        node.send([msgs]);
+      wb.pSubscribe(config.pattern, ({ keyValuePairs, deleted }) => {
+        if (keyValuePairs) {
+          const msgs = keyValuePairs.map(({ key, value }) => {
+            return { payload: value, topic: key };
+          });
+          node.send([msgs, null]);
+        }
+        if (deleted) {
+          const msgs = deleted.map(({ key, value }) => {
+            return { payload: value, topic: key };
+          });
+          node.send([null, msgs]);
+        }
       });
     });
   }

@@ -1,45 +1,45 @@
 const { setupWb } = require("../utils");
 
 module.exports = function (RED) {
-  function WorterbuchGetNode(config) {
+  function WorterbuchLsNode(config) {
     const node = this;
 
-    node.key = config.key;
-    node.keyType = config.keyType || "string";
+    node.parent = config.parent;
+    node.parentType = config.parentType || "string";
 
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
       node.on("input", (msg) => {
-        let key;
+        let parent;
         RED.util.evaluateNodeProperty(
-          node.key,
-          node.keyType,
+          node.parent,
+          node.parentType,
           node,
           msg,
           (err, value) => {
             if (err) {
-              node.error("Unable to evaluate key", msg);
+              node.error("Unable to evaluate parent", msg);
               node.status({
                 fill: "red",
                 shape: "ring",
-                text: "Unable to evaluate key",
+                text: "Unable to evaluate parent",
               });
               return;
             } else {
-              key = value;
+              parent = value;
             }
           }
         );
 
-        key ||= msg.topic;
+        parent ||= msg.topic;
 
-        wb.get(key, (val) => {
-          msg.payload = val;
+        wb.ls(parent, (children) => {
+          msg.payload = children;
           node.send(msg);
         });
       });
     });
   }
-  RED.nodes.registerType("worterbuch-get", WorterbuchGetNode);
+  RED.nodes.registerType("worterbuch-ls", WorterbuchLsNode);
 };
