@@ -7,8 +7,8 @@ module.exports = function (RED) {
 
     wb.whenConnected(() => {
       const topic = config.parent;
-      wb.subscribeLs(topic, (payload) => {
-        node.send({ payload, topic });
+      wb.subscribeLs(topic, ({ children }) => {
+        node.send({ payload: children, topic });
       });
     });
   }
