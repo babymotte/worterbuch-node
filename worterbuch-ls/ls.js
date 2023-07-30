@@ -34,7 +34,7 @@ module.exports = function (RED) {
 
         parent ||= msg.topic;
 
-        wb.ls(parent, (children) => {
+        wb.ls(parent, ({ children }) => {
           msg.payload = children;
           node.send(msg);
         });
