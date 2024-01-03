@@ -31,7 +31,8 @@
       "worterbuch-ls": "worterbuch-ls/ls.js",
       "worterbuch-subls": "worterbuch-subls/subls.js",
       "worterbuch-publish": "worterbuch-publish/pub.js",
-      "worterbuch-delete": "worterbuch-delete/del.js"
+      "worterbuch-delete": "worterbuch-delete/del.js",
+      "worterbuch-pdelete": "worterbuch-pdelete/pdel.js"
     }
   },
   "dependencies": {
