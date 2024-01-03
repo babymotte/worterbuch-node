@@ -22,17 +22,17 @@
   "homepage": "https://github.com/babymotte/worterbuch-node#readme",
   "node-red": {
     "nodes": {
-      "worterbuch-server": "worterbuch-server/server.js",
+      "worterbuch-set": "worterbuch-set/set.js",
+      "worterbuch-publish": "worterbuch-publish/pub.js",
       "worterbuch-get": "worterbuch-get/get.js",
       "worterbuch-pget": "worterbuch-pget/pget.js",
-      "worterbuch-set": "worterbuch-set/set.js",
+      "worterbuch-delete": "worterbuch-delete/del.js",
+      "worterbuch-pdelete": "worterbuch-pdelete/pdel.js",
+      "worterbuch-ls": "worterbuch-ls/ls.js",
       "worterbuch-sub": "worterbuch-sub/sub.js",
       "worterbuch-psub": "worterbuch-psub/psub.js",
-      "worterbuch-ls": "worterbuch-ls/ls.js",
       "worterbuch-subls": "worterbuch-subls/subls.js",
-      "worterbuch-publish": "worterbuch-publish/pub.js",
-      "worterbuch-delete": "worterbuch-delete/del.js",
-      "worterbuch-pdelete": "worterbuch-pdelete/pdel.js"
+      "worterbuch-server": "worterbuch-server/server.js"
     }
   },
   "dependencies": {
