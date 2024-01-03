@@ -29,7 +29,8 @@
       "worterbuch-sub": "worterbuch-sub/sub.js",
       "worterbuch-psub": "worterbuch-psub/psub.js",
       "worterbuch-ls": "worterbuch-ls/ls.js",
-      "worterbuch-subls": "worterbuch-subls/subls.js"
+      "worterbuch-subls": "worterbuch-subls/subls.js",
+      "worterbuch-publish": "worterbuch-publish/pub.js"
     }
   },
   "dependencies": {

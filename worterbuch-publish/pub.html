@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType("worterbuch-set", {
+  RED.nodes.registerType("worterbuch-publish", {
     category: "network",
     color: "#aabbfa",
     defaults: {
@@ -14,7 +14,7 @@
     outputs: 0,
     icon: "bridge.svg",
     label: function () {
-      return this.name || "wbset";
+      return this.name || "wbpub";
     },
     oneditprepare: () => {
       $("#node-input-key").typedInput({
@@ -31,7 +31,7 @@
   });
 </script>
 
-<script type="text/html" data-template-name="worterbuch-set">
+<script type="text/html" data-template-name="worterbuch-publish">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name" />
@@ -54,6 +54,6 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="worterbuch-set">
-  <p>A node that sets values on a Wörterbuch server.</p>
+<script type="text/html" data-help-name="worterbuch-publish">
+  <p>A node that publishes values to a Wörterbuch server.</p>
 </script>
