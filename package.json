@@ -33,6 +33,6 @@
     }
   },
   "dependencies": {
-    "worterbuch-js": "^0.35.1"
+    "worterbuch-js": "^0.42.5"
   }
 }

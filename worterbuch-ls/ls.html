@@ -4,37 +4,40 @@
     color: "#aabbfa",
     defaults: {
       name: { value: "" },
-      server: { value: "", type: "worterbuch-server" },
-      parent: { value: "topic" },
+      server: { value: "", type: "worterbuch-server", required: true },
+      parent: { value: "topic", required: false },
+      parentType: { value: "msg", required: true },
     },
     inputs: 1,
-    outputs: 1,
+    outputs: 2,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbls";
     },
     oneditprepare: () =>
-      $("#node-input-key").typedInput({
-        type: "msg",
-        types: ["msg", "flow", "global"],
-        typeField: "#node-input-key-type",
+      $("#node-input-parent").typedInput({
+        default: "msg",
+        types: ["msg", "flow", "global", "str", "env"],
+        typeField: "#node-input-parentType",
       }),
   });
 </script>
 
 <script type="text/html" data-template-name="worterbuch-ls">
   <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
     <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
     <input type="text" id="node-input-server" placeholder="Server" />
   </div>
   <div class="form-row">
-    <label for="node-input-key"><i class="fa fa-file-text-o"></i> Parent</label>
-    <input type="text" id="node-input-parent" />
-    <input type="hidden" id="node-input-parent-type" placeholder="Parent" />
-  </div>
-  <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name" />
+    <label for="node-input-parent"
+      ><i class="fa fa-file-text-o"></i> Parent</label
+    >
+    <input type="text" id="node-input-parent" placeholder="Parent" />
+    <input type="hidden" id="node-input-parentType" />
   </div>
 </script>
 

@@ -4,25 +4,30 @@
     color: "#aabbfa",
     defaults: {
       name: { value: "" },
-      server: { value: "", type: "worterbuch-server" },
+      server: { value: "", type: "worterbuch-server", required: true },
       pattern: { value: "topic", required: true },
+      patternType: { value: "msg", required: true },
     },
     inputs: 1,
-    outputs: 1,
+    outputs: 2,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbpget";
     },
     oneditprepare: () =>
       $("#node-input-pattern").typedInput({
-        type: "msg",
-        types: ["msg", "flow", "global"],
-        typeField: "#node-input-pattern-type",
+        default: "msg",
+        types: ["msg", "flow", "global", "str", "env"],
+        typeField: "#node-input-patternType",
       }),
   });
 </script>
 
 <script type="text/html" data-template-name="worterbuch-pget">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
   <div class="form-row">
     <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
     <input type="text" id="node-input-server" placeholder="Server" />
@@ -32,11 +37,7 @@
       ><i class="fa fa-file-text-o"></i> Pattern</label
     >
     <input type="text" id="node-input-pattern" />
-    <input type="hidden" id="node-input-pattern-type" />
-  </div>
-  <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name" />
+    <input type="hidden" id="node-input-patternType" />
   </div>
 </script>
 

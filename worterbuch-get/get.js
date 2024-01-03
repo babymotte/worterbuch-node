@@ -3,41 +3,30 @@ const { setupWb } = require("../utils");
 module.exports = function (RED) {
   function WorterbuchGetNode(config) {
     const node = this;
-
-    node.key = config.key;
-    node.keyType = config.keyType || "string";
-
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
-        let key;
-        RED.util.evaluateNodeProperty(
-          node.key,
-          node.keyType,
-          node,
-          msg,
-          (err, value) => {
-            if (err) {
-              node.error("Unable to evaluate key", msg);
-              node.status({
-                fill: "red",
-                shape: "ring",
-                text: "Unable to evaluate key",
-              });
-              return;
-            } else {
-              key = value;
-            }
-          }
-        );
+      node.on("input", (msg, send, done) => {
+        let key =
+          RED.util.evaluateNodeProperty(
+            config.key,
+            config.keyType,
+            node,
+            msg
+          ) || msg.topic;
 
-        key ||= msg.topic;
-
-        wb.get(key, (val) => {
-          msg.payload = val;
-          node.send(msg);
-        });
+        wb.connection
+          .get(key)
+          .then((val) => {
+            const newMsg = { ...msg, topic: key, payload: val };
+            send([[newMsg], null]);
+            done();
+          })
+          .catch((err) => {
+            const newMsg = { ...msg, topic: key, payload: err };
+            send([null, [newMsg]]);
+            done();
+          });
       });
     });
   }

@@ -6,10 +6,16 @@ module.exports = function (RED) {
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      const topic = config.parent;
-      wb.subscribeLs(topic, ({ children }) => {
-        node.send({ payload: children, topic });
-      });
+      const topic = config.parent || undefined;
+      wb.connection.subscribeLs(
+        topic,
+        (children) => {
+          node.send([[{ payload: children, topic }], null]);
+        },
+        (err) => {
+          node.send([[{ payload: err, topic }], null]);
+        }
+      );
     });
   }
   RED.nodes.registerType("worterbuch-subls", WorterbuchSubLsNode);

@@ -4,11 +4,13 @@
     color: "#aabbfa",
     defaults: {
       name: { value: "" },
-      server: { value: "", type: "worterbuch-server" },
+      server: { value: "", type: "worterbuch-server", required: true },
       pattern: { value: "", required: true },
+      unique: { value: false, required: true },
+      liveOnly: { value: false, required: true },
     },
     inputs: 0,
-    outputs: 2,
+    outputs: 3,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbpsub " + this.pattern;
@@ -17,6 +19,10 @@
 </script>
 
 <script type="text/html" data-template-name="worterbuch-psub">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
   <div class="form-row">
     <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
     <input type="text" id="node-input-server" placeholder="Server" />
@@ -28,8 +34,16 @@
     <input type="text" id="node-input-pattern" placeholder="Pattern" />
   </div>
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name" />
+    <label for="node-input-unique"
+      ><i class="fa fa-file-text-o"></i> Unique</label
+    >
+    <input type="checkbox" id="node-input-unique" placeholder="Unique" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-liveOnly"
+      ><i class="fa fa-file-text-o"></i> Live Only</label
+    >
+    <input type="checkbox" id="node-input-liveOnly" placeholder="Live Only" />
   </div>
 </script>
 

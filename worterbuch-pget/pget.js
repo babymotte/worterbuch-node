@@ -3,44 +3,35 @@ const { setupWb } = require("../utils");
 module.exports = function (RED) {
   function WorterbuchPGetNode(config) {
     const node = this;
-
-    node.pattern = config.pattern || "payload";
-    node.patternType = config.patternType || "msg";
-
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
-        let pattern;
-        RED.util.evaluateNodeProperty(
-          node.pattern,
-          node.patternType,
-          node,
-          msg,
-          (err, value) => {
-            if (err) {
-              node.error("Unable to evaluate pattern", msg);
-              node.status({
-                fill: "red",
-                shape: "ring",
-                text: "Unable to evaluate pattern",
-              });
-              return;
-            } else {
-              pattern = value;
-            }
-          }
-        );
+      node.on("input", (msg, send, done) => {
+        let pattern =
+          RED.util.evaluateNodeProperty(
+            config.pattern,
+            config.patternType,
+            node,
+            msg
+          ) || msg.topic;
 
-        wb.pGet(pattern, (kvps) => {
-          const msgs = kvps.map(({ key, value }) => {
-            const newMsg = { ...msg };
-            newMsg.payload = value;
-            newMsg[node.pattern] = key;
-            return newMsg;
+        wb.connection
+          .pGet(pattern)
+          .then((kvps) => {
+            const msgs = kvps.map(({ key, value }) => ({
+              ...msg,
+              topic: key,
+              payload: value,
+              pattern,
+            }));
+            send([msgs, null]);
+            done();
+          })
+          .catch((err) => {
+            const newMsg = { ...msg, pattern, payload: err };
+            send([null, [newMsg]]);
+            done();
           });
-          node.send([msgs]);
-        });
       });
     });
   }

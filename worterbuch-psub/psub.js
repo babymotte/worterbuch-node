@@ -6,20 +6,26 @@ module.exports = function (RED) {
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      wb.pSubscribe(config.pattern, ({ keyValuePairs, deleted }) => {
-        if (keyValuePairs) {
-          const msgs = keyValuePairs.map(({ key, value }) => {
-            return { payload: value, topic: key };
-          });
-          node.send([msgs, null]);
-        }
-        if (deleted) {
-          const msgs = deleted.map(({ key, value }) => {
-            return { payload: value, topic: key };
-          });
-          node.send([null, msgs]);
-        }
-      });
+      wb.connection.pSubscribe(
+        config.pattern,
+        ({ keyValuePairs, deleted }) => {
+          if (keyValuePairs) {
+            const msgs = keyValuePairs.map(({ key, value }) => {
+              return { payload: value, topic: key };
+            });
+            node.send([msgs, null, null]);
+          }
+          if (deleted) {
+            const msgs = deleted.map(({ key, value }) => {
+              return { payload: value, topic: key };
+            });
+            node.send([null, msgs, null]);
+          }
+        },
+        config.unique,
+        config.liveOnly,
+        (payload) => node.send([null, null, [payload]])
+      );
     });
   }
   RED.nodes.registerType("worterbuch-psub", WorterbuchPSubNode);

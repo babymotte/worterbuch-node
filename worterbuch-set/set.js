@@ -6,8 +6,25 @@ module.exports = function (RED) {
     const wb = setupWb(node, RED, config);
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
-        wb.set(msg.topic, msg.payload);
+      node.on("input", (msg, send, done) => {
+        let key =
+          RED.util.evaluateNodeProperty(
+            config.key,
+            config.keyType,
+            node,
+            msg
+          ) || msg.topic;
+
+        let val =
+          RED.util.evaluateNodeProperty(
+            config.value,
+            config.valueType,
+            node,
+            msg
+          ) || msg.payload;
+
+        wb.connection.set(key, val);
+        done();
       });
     });
   }

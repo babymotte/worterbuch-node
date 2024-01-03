@@ -4,6 +4,7 @@
     defaults: {
       host: { value: "localhost", required: true },
       port: { value: 8080, required: true, validate: RED.validators.number() },
+      auth: { value: "", required: false },
       reconnect: { value: true, required: true },
     },
     label: function () {
@@ -24,6 +25,12 @@
       ><i class="fa fa-bookmark"></i> Port</label
     >
     <input type="text" id="node-config-input-port" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-auth"
+      ><i class="fa fa-bookmark"></i> Auth Token</label
+    >
+    <input type="password" id="node-config-input-auth" />
   </div>
 
   <div class="form-row">

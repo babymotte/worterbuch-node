@@ -7,9 +7,22 @@ module.exports = function (RED) {
 
     wb.whenConnected(() => {
       const topic = config.key;
-      wb.subscribe(topic, (payload) => {
-        node.send({ payload, topic });
-      });
+      wb.connection.subscribe(
+        topic,
+        ({ value, deleted }) => {
+          if (value) {
+            node.send([[{ payload: value, topic }], null, null]);
+          }
+          if (deleted) {
+            node.send([null, [{ payload: deleted, topic }], null]);
+          }
+        },
+        config.unique,
+        config.liveOnly,
+        (payload) => {
+          node.send([null, null, [{ payload, topic }]]);
+        }
+      );
     });
   }
   RED.nodes.registerType("worterbuch-sub", WorterbuchSubNode);
