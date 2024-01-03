@@ -1,0 +1,44 @@
+<script type="text/javascript">
+  RED.nodes.registerType("worterbuch-delete", {
+    category: "network",
+    color: "#aabbfa",
+    defaults: {
+      name: { value: "" },
+      server: { value: "", type: "worterbuch-server", required: true },
+      key: { value: "topic", required: true },
+      keyType: { value: "msg", required: true },
+    },
+    inputs: 1,
+    outputs: 2,
+    icon: "bridge.svg",
+    label: function () {
+      return this.name || "wbdel";
+    },
+    oneditprepare: () =>
+      $("#node-input-key").typedInput({
+        default: "msg",
+        types: ["msg", "flow", "global", "str", "env"],
+        typeField: "#node-input-keyType",
+      }),
+  });
+</script>
+
+<script type="text/html" data-template-name="worterbuch-delete">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+    <input type="text" id="node-input-server" placeholder="Server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-key"><i class="fa fa-file-text-o"></i> Key</label>
+    <input type="text" id="node-input-key" placeholder="Key" />
+    <input type="hidden" id="node-input-keyType" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="worterbuch-delete">
+  <p>A node that deletes values from a Wörterbuch server.</p>
+</script>
