@@ -10,10 +10,10 @@ module.exports = function (RED) {
       wb.connection.subscribe(
         topic,
         ({ value, deleted }) => {
-          if (value) {
+          if (value !== undefined) {
             node.send([[{ payload: value, topic }], null, null]);
           }
-          if (deleted) {
+          if (deleted !== undefined) {
             node.send([null, [{ payload: deleted, topic }], null]);
           }
         },

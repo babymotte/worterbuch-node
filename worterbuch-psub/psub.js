@@ -9,13 +9,13 @@ module.exports = function (RED) {
       wb.connection.pSubscribe(
         config.pattern,
         ({ keyValuePairs, deleted }) => {
-          if (keyValuePairs) {
+          if (keyValuePairs !== undefined) {
             const msgs = keyValuePairs.map(({ key, value }) => {
               return { payload: value, topic: key };
             });
             node.send([msgs, null, null]);
           }
-          if (deleted) {
+          if (deleted !== undefined) {
             const msgs = deleted.map(({ key, value }) => {
               return { payload: value, topic: key };
             });
