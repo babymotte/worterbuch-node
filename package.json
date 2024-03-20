@@ -1,6 +1,6 @@
 {
   "name": "@babymotte/node-red-worterbuch",
-  "version": "0.42.1",
+  "version": "0.43.0",
   "description": "Nodes for Wörterbuch integration",
   "main": "index.js",
   "keywords": [
