@@ -7,6 +7,7 @@ module.exports = function (RED) {
     node.wb = {};
     node.wb.closed = false;
     node.wb.reconnect = config.reconnect;
+    console.log("worterbuch server config:", config);
     const onclose = () => {
       if (node.wb.connected) {
         console.log("Connection closed.");
@@ -71,7 +72,7 @@ module.exports = function (RED) {
             node.wb.connection.close();
           }
           node.wb.connection = await connect(
-            `ws://${config.host}:${config.port}/ws`,
+            `${config.proto}://${config.host}:${config.port}/ws`,
             config.auth
           );
           if (node.wb.closed) {

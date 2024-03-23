@@ -2,18 +2,39 @@
   RED.nodes.registerType("worterbuch-server", {
     category: "config",
     defaults: {
+      proto: { value: "tcp", required: true },
       host: { value: "localhost", required: true },
       port: { value: 8080, required: true, validate: RED.validators.number() },
       auth: { value: "", required: false },
       reconnect: { value: true, required: true },
     },
     label: function () {
-      return this.host + ":" + this.port;
+      return this.proto + "://" + this.host + ":" + this.port + "/ws";
+    },
+    oneditprepare: function () {
+      $("#node-config-input-proto").typedInput({
+        types: [
+          {
+            value: "proto",
+            options: [
+              { value: "tcp", label: "TCP" },
+              { value: "ws", label: "WS" },
+              { value: "wss", label: "WSS" },
+            ],
+          },
+        ],
+      });
     },
   });
 </script>
 
 <script type="text/html" data-template-name="worterbuch-server">
+  <div class="form-row">
+    <label for="node-config-input-proto"
+      ><i class="fa fa-bookmark"></i> Protocol</label
+    >
+    <input type="select" id="node-config-input-proto" />
+  </div>
   <div class="form-row">
     <label for="node-config-input-host"
       ><i class="fa fa-bookmark"></i> Host</label
