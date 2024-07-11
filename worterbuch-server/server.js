@@ -81,6 +81,7 @@ module.exports = function (RED) {
           node.wb.connection.onclose = onclose;
           node.wb.connected = true;
           node.wb.connecting = false;
+          node.wb.connection.setClientName("node-red");
           if (node.wb.connectedCallbacks) {
             try {
               node.wb.connectedCallbacks.forEach((cb) => cb());
