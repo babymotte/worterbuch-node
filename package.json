@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/babymotte/worterbuch-node#readme",
   "node-red": {
+    "version": ">=3.0.0",
     "nodes": {
       "worterbuch-set": "worterbuch-set/set.js",
       "worterbuch-publish": "worterbuch-publish/pub.js",
