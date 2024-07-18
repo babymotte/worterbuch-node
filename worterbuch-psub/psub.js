@@ -3,7 +3,9 @@ const { setupWb } = require("../utils");
 module.exports = function (RED) {
   function WorterbuchPSubNode(config) {
     const node = this;
-    const wb = setupWb(node, RED, config);
+    const wb = setupWb(node, RED, config, (status) =>
+      node.send([null, null, null, status])
+    );
 
     wb.whenConnected(() => {
       wb.connection.pSubscribe(
@@ -13,18 +15,18 @@ module.exports = function (RED) {
             const msgs = keyValuePairs.map(({ key, value }) => {
               return { payload: value, topic: key };
             });
-            node.send([msgs, null, null]);
+            node.send([msgs, null, null, null]);
           }
           if (deleted !== undefined) {
             const msgs = deleted.map(({ key, value }) => {
               return { payload: value, topic: key };
             });
-            node.send([null, msgs, null]);
+            node.send([null, msgs, null, null]);
           }
         },
         config.unique,
         config.liveOnly,
-        (payload) => node.send([null, null, [payload]])
+        (payload) => node.send([null, null, [payload], null])
       );
     });
   }

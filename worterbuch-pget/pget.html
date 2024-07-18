@@ -9,11 +9,12 @@
       patternType: { value: "msg", required: true },
     },
     inputs: 1,
-    outputs: 2,
+    outputs: 3,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbpget";
     },
+    outputLabels: ["values", "errors", "connection status"],
     oneditprepare: () =>
       $("#node-input-pattern").typedInput({
         default: "msg",

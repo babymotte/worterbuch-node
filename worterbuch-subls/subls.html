@@ -8,11 +8,12 @@
       parent: { value: "", required: false },
     },
     inputs: 0,
-    outputs: 2,
+    outputs: 3,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbsubls " + this.parent;
     },
+    outputLabels: ["children", "errors", "connection status"],
   });
 </script>
 

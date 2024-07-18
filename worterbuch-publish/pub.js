@@ -3,10 +3,11 @@ const { setupWb } = require("../utils");
 module.exports = function (RED) {
   function WorterbuchPubNode(config) {
     const node = this;
-    const wb = setupWb(node, RED, config);
-
+    const wb = setupWb(node, RED, config, (status) =>
+      node.send([null, status])
+    );
     wb.whenConnected(() => {
-      node.on("input", (msg, send, done) => {
+      node.on("input", (msg) => {
         let key =
           RED.util.evaluateNodeProperty(
             config.key,
@@ -23,8 +24,14 @@ module.exports = function (RED) {
             msg
           ) || msg.payload;
 
-        wb.connection.publish(key, val);
-        done();
+        wb.connection
+          .publish(key, val)
+          .then(node.done)
+          .catch((err) => {
+            const newMsg = { ...msg, topic: key, payload: err.cause };
+            node.send([[newMsg], null]);
+            node.done();
+          });
       });
     });
   }

@@ -9,11 +9,12 @@
       parentType: { value: "msg", required: true },
     },
     inputs: 1,
-    outputs: 2,
+    outputs: 3,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbls";
     },
+    outputLabels: ["children", "errors", "connection status"],
     oneditprepare: () =>
       $("#node-input-parent").typedInput({
         default: "msg",

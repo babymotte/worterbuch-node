@@ -16,6 +16,7 @@
     label: function () {
       return this.name || "wbpub";
     },
+    outputLabels: ["errors", "connection status"],
     oneditprepare: () => {
       $("#node-input-key").typedInput({
         default: "msg",

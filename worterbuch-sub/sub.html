@@ -10,11 +10,12 @@
       liveOnly: { value: false, required: true },
     },
     inputs: 0,
-    outputs: 3,
+    outputs: 4,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbsub " + this.key;
     },
+    outputLabels: ["set", "deleted", "errors", "connection status"],
   });
 </script>
 

@@ -3,10 +3,12 @@ const { setupWb } = require("../utils");
 module.exports = function (RED) {
   function WorterbuchPGetNode(config) {
     const node = this;
-    const wb = setupWb(node, RED, config);
+    const wb = setupWb(node, RED, config, (status) =>
+      node.send([null, null, status])
+    );
 
     wb.whenConnected(() => {
-      node.on("input", (msg, send, done) => {
+      node.on("input", (msg) => {
         let pattern =
           RED.util.evaluateNodeProperty(
             config.pattern,
@@ -24,13 +26,13 @@ module.exports = function (RED) {
               payload: value,
               pattern,
             }));
-            send([msgs, null]);
-            done();
+            node.send([msgs, null, null]);
+            node.done();
           })
           .catch((err) => {
-            const newMsg = { ...msg, pattern, payload: err };
-            send([null, [newMsg]]);
-            done();
+            const newMsg = { ...msg, pattern, payload: err.cause };
+            node.send([null, [newMsg], null]);
+            node.done();
           });
       });
     });

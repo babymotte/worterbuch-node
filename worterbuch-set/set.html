@@ -11,11 +11,12 @@
       valueType: { value: "msg", required: true },
     },
     inputs: 1,
-    outputs: 0,
+    outputs: 2,
     icon: "bridge.svg",
     label: function () {
       return this.name || "wbset";
     },
+    outputLabels: ["errors", "connection status"],
     oneditprepare: () => {
       $("#node-input-key").typedInput({
         default: "msg",

@@ -1,4 +1,14 @@
 const { connect } = require("worterbuch-js");
+const {
+  WB_STATUS_ERROR,
+  WB_STATE_DISCONNECTED,
+  WB_STATE_WAITING_FOR_RECONNECT,
+  WB_STATE_CONNECTING,
+  WB_STATUS_WARNING,
+  WB_STATUS_OK,
+  WB_STATE_CONNECTED,
+  WB_STATE_CONNECTION_FAILED,
+} = require("../utils");
 
 module.exports = function (RED) {
   function WorterbuchServerNode(config) {
@@ -14,6 +24,13 @@ module.exports = function (RED) {
       }
       node.wb.connected = false;
       node.wb.connecting = false;
+
+      updateStatus(
+        node.wb.connectionStateCallbacks,
+        WB_STATE_DISCONNECTED,
+        WB_STATUS_ERROR
+      );
+
       if (node.wb.reconnect && !node.wb.closed) {
         if (node.wb.reconnectTimeout) {
           clearTimeout(node.wb.reconnectTimeout);
@@ -25,6 +42,13 @@ module.exports = function (RED) {
           node.wb.connected = false;
           node.wb.connecting = true;
           console.log("Trying to reconnect …");
+
+          updateStatus(
+            node.wb.connectionStateCallbacks,
+            WB_STATE_WAITING_FOR_RECONNECT,
+            WB_STATUS_WARNING
+          );
+
           if (node.wb.reconnectTimeout) {
             clearTimeout(node.wb.reconnectTimeout);
           }
@@ -51,7 +75,29 @@ module.exports = function (RED) {
       if (node.wb.closed) {
         return;
       }
+
+      updateStatus(
+        node.wb.connectionStateCallbacks,
+        WB_STATE_CONNECTING,
+        WB_STATUS_ERROR
+      );
       node.wb.connecting = true;
+      node.wb.onConnectionStatus = (id, cb) => {
+        if (!node.wb.connectionStateCallbacks) {
+          console.log("Creating new connection state callback map.");
+          node.wb.connectionStateCallbacks = new Map();
+        }
+        node.wb.connectionStateCallbacks.set(id, cb);
+        console.log(
+          "Connection state callback map size:",
+          node.wb.connectionStateCallbacks.size
+        );
+      };
+      node.wb.clearOnConnectionStatus = (id) => {
+        if (node.wb.connectionStateCallbacks) {
+          node.wb.connectionStateCallbacks.delete(id);
+        }
+      };
       node.wb.whenConnected = (cb) => {
         if (node.wb.closed) {
           return;
@@ -78,6 +124,11 @@ module.exports = function (RED) {
           if (node.wb.closed) {
             throw new Error("node closed while connecting");
           }
+          updateStatus(
+            node.wb.connectionStateCallbacks,
+            WB_STATE_CONNECTED,
+            WB_STATUS_OK
+          );
           node.wb.connection.onclose = onclose;
           node.wb.connected = true;
           node.wb.connecting = false;
@@ -91,6 +142,11 @@ module.exports = function (RED) {
             delete node.wb.connectedCallbacks;
           }
         } catch (err) {
+          updateStatus(
+            node.wb.connectionStateCallbacks,
+            WB_STATE_CONNECTION_FAILED,
+            WB_STATUS_ERROR
+          );
           console.error(err);
           node.wb.connected = false;
           node.wb.connecting = false;
@@ -102,3 +158,11 @@ module.exports = function (RED) {
   }
   RED.nodes.registerType("worterbuch-server", WorterbuchServerNode);
 };
+
+function updateStatus(callbacks, state, status) {
+  if (callbacks) {
+    callbacks.forEach((cb) => {
+      cb({ status, state });
+    });
+  }
+}
