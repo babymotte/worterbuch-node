@@ -117,10 +117,16 @@ module.exports = function (RED) {
           if (node.wb.connection) {
             node.wb.connection.close();
           }
-          node.wb.connection = await connect(
-            `${config.proto}://${config.host}:${config.port}/ws`,
-            config.auth
-          );
+          console.log("config.servers", config.servers);
+          console.log("config", config);
+          const addresses = config.servers
+            ? config.servers
+                .split(",")
+                .map((s) => `${config.proto}://${s.trim()}/ws`)
+            : [];
+
+          console.log("addresses", addresses);
+          node.wb.connection = await connect(addresses, config.auth);
           if (node.wb.closed) {
             throw new Error("node closed while connecting");
           }

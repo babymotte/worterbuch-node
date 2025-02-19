@@ -8,7 +8,7 @@ module.exports = function (RED) {
     );
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
+      node.on("input", (msg, send, done) => {
         let key =
           RED.util.evaluateNodeProperty(
             config.key,
@@ -27,11 +27,11 @@ module.exports = function (RED) {
 
         wb.connection
           .set(key, val)
-          .then(node.done)
+          .then(done)
           .catch((err) => {
             const newMsg = { ...msg, topic: key, payload: err.cause };
-            node.send([[newMsg], null]);
-            node.done();
+            send([[newMsg], null]);
+            done();
           });
       });
     });

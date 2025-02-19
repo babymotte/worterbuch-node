@@ -8,7 +8,7 @@ module.exports = function (RED) {
     );
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
+      node.on("input", (msg, send, done) => {
         let parent = RED.util.evaluateNodeProperty(
           config.parent,
           config.parentType,
@@ -20,13 +20,13 @@ module.exports = function (RED) {
           .ls(parent || undefined)
           .then((children) => {
             const newMsg = { ...msg, topic: parent, payload: children };
-            node.send([[newMsg], null, null]);
-            node.done();
+            send([[newMsg], null, null]);
+            done();
           })
           .catch((err) => {
             const newMsg = { ...msg, topic: parent, payload: err.cause };
-            node.send([null, [newMsg], null]);
-            node.done();
+            send([null, [newMsg], null]);
+            done();
           });
       });
     });

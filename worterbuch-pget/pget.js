@@ -8,7 +8,7 @@ module.exports = function (RED) {
     );
 
     wb.whenConnected(() => {
-      node.on("input", (msg) => {
+      node.on("input", (msg, send, done) => {
         let pattern =
           RED.util.evaluateNodeProperty(
             config.pattern,
@@ -26,13 +26,13 @@ module.exports = function (RED) {
               payload: value,
               pattern,
             }));
-            node.send([msgs, null, null]);
-            node.done();
+            send([msgs, null, null]);
+            done();
           })
           .catch((err) => {
             const newMsg = { ...msg, pattern, payload: err.cause };
-            node.send([null, [newMsg], null]);
-            node.done();
+            send([null, [newMsg], null]);
+            done();
           });
       });
     });

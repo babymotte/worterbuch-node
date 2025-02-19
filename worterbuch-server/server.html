@@ -3,13 +3,14 @@
     category: "config",
     defaults: {
       proto: { value: "tcp", required: true },
-      host: { value: "localhost", required: true },
-      port: { value: 8080, required: true, validate: RED.validators.number() },
+      servers: { value: "localhost:8081", required: true },
       auth: { value: "", required: false },
       reconnect: { value: true, required: true },
     },
     label: function () {
-      return this.proto + "://" + this.host + ":" + this.port + "/ws";
+      return this.servers.includes(",")
+        ? this.proto + "://[" + this.servers + "]/ws"
+        : this.proto + "://" + this.servers + "/ws";
     },
     oneditprepare: function () {
       $("#node-config-input-proto").typedInput({
@@ -36,16 +37,10 @@
     <input type="select" id="node-config-input-proto" />
   </div>
   <div class="form-row">
-    <label for="node-config-input-host"
-      ><i class="fa fa-bookmark"></i> Host</label
+    <label for="node-config-input-servers"
+      ><i class="fa fa-bookmark"></i> Servers</label
     >
-    <input type="text" id="node-config-input-host" />
-  </div>
-  <div class="form-row">
-    <label for="node-config-input-port"
-      ><i class="fa fa-bookmark"></i> Port</label
-    >
-    <input type="text" id="node-config-input-port" />
+    <input type="text" id="node-config-input-servers" />
   </div>
   <div class="form-row">
     <label for="node-config-input-auth"
